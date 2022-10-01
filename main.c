@@ -46,7 +46,10 @@ int main() {
         strcpy(ord.date, __DATE__);
         printf("Please enter the number of items:\t");
         scanf("%d",&n);
-
+            
+        /*
+        This loop lets you iterate and input data over the numbers of item purchased
+        */
         for (int i = 0; i < n; i++)
         {
             /* code */
