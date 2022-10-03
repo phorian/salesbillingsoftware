@@ -91,9 +91,16 @@ int main() {
         strcpy(ord.date, __DATE__);
         printf("Please enter the number of items:\t");
         scanf("%d",&n);
+<<<<<<< HEAD
         ord.numOfItems = n;
 
         //to iterate over the number of items purchased
+=======
+            
+        /*
+        This loop lets you iterate and input data over the numbers of item purchased
+        */
+>>>>>>> refs/remotes/origin/master
         for (int i = 0; i < n; i++)
         {
             /* code */
