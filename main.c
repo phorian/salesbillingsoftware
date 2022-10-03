@@ -3,14 +3,13 @@
 #include <time.h>
 #include <string.h>
 
-
 struct items
 {
     /* data */
     char itemName[20];
     float price;
     int qty;
-};
+}
 
 struct orders
 {
@@ -19,12 +18,7 @@ struct orders
     char date[50];
     int numOfItems;
     struct items itm[50];
-};
-void generateBillHeader;
-void generateBillBody;
-void generateBillFooter;
-
-
+}
 
 void generateBillHeader(char name[50], char date[30]){
     printf("\n\n");
@@ -91,16 +85,9 @@ int main() {
         strcpy(ord.date, __DATE__);
         printf("Please enter the number of items:\t");
         scanf("%d",&n);
-<<<<<<< HEAD
         ord.numOfItems = n;
 
         //to iterate over the number of items purchased
-=======
-            
-        /*
-        This loop lets you iterate and input data over the numbers of item purchased
-        */
->>>>>>> refs/remotes/origin/master
         for (int i = 0; i < n; i++)
         {
             /* code */
@@ -133,3 +120,4 @@ int main() {
 
     return 0;
 }
+
