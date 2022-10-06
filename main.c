@@ -9,7 +9,7 @@ struct items
     char itemName[20];
     float price;
     int qty;
-}
+};
 
 struct orders
 {
@@ -18,7 +18,7 @@ struct orders
     char date[50];
     int numOfItems;
     struct items itm[50];
-}
+};
 
 void generateBillHeader(char name[50], char date[30]){
     printf("\n\n");
@@ -44,16 +44,20 @@ void generateBillBody(char itemName[20], int qty, float price){
 
 void generateBillFooter(float total){
     printf("\n");
-    float dis = 0.1*total;
+    float dis = 0.1f*total;
     float netTotal = total-dis;
-    float cgst = 0.09*netTotal,grandTotal = netTotal + 2;
+    float cgst = 0.09f*netTotal,grandTotal = netTotal + 2;
     printf("-------------------------------------------\t");
     printf("Sub Total\t\t\t%.2f",total);
+<<<<<<< HEAD
     printf("\nDiscount @10%s\t\t\t%.2f","%",dis);
+=======
+    printf("\nDiscount @10\t\t\t%.2f",dis); // I don't really understand this part
+>>>>>>> bea0639b4824d426bcddc73f33ffed38e1e6675d
     printf("\n\t\t\t\t--------");
     printf("Net Total\t\t\t\t%.2f", netTotal);
-    printf("CGST @9%S\t\t\t\t%.2f", cgst);
-    printf("SGST @9%s\t\t\t\t%.2f", cgst);
+    printf("CGST @9\t\t\t\t%.2f", cgst); // I don't really understand this part
+    printf("SGST @9\t\t\t\t%.2f", cgst); // I don't really understand this part
     printf("\n---------------------------------------------");
     printf("\nGrand Total\t\t\t%.2f",grandTotal);
     printf("\n---------------------------------------------");
@@ -65,6 +69,11 @@ int main() {
     int opt,n;
     struct orders ord;
     float total;
+
+
+    // initialize arrays to zero
+    memset(ord.customerName, 0, sizeof ord.customerName);
+    memset(ord.date, 0, sizeof ord.date);
 
     printf("===============X-Nova Tech===================");
     printf("\nPlease select your operation");
@@ -93,13 +102,18 @@ int main() {
             /* code */
             fgetc(stdin);
             printf("Please enter the item %d: \t",i+1);
+
+            // initilialize arrays in items to zero
+            memset(ord.itm[i].itemName, 0, sizeof ord.itm[i].itemName);
+
+
             fgets(ord.itm[i].itemName,20,stdin);
             ord.itm[i].itemName[strlen(ord.itm[i].itemName)-1]=0;
             printf("\nPlease enter the quantity:\t");
             scanf("%d",&ord.itm[i].qty);
             printf("\nPlease enter the unit price:\t");
             scanf("%f", &ord.itm[i].price);
-            total += ord.tm[i].qty * ord.itm[i].price;
+            total += ord.itm[i].qty * ord.itm[i].price;
         }
 
         generateBillHeader(ord.customerName, ord.date);
