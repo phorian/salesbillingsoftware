@@ -6,7 +6,7 @@
 struct items
 {
     /* data */
-    char itemName[20];
+    char itemName[50];
     float price;
     int qty;
 };
@@ -28,7 +28,7 @@ void generateBillHeader(char name[50], char date[30]){
     printf("\nInvoice To: %s", name);
     printf("\n");
     printf("---------------------------");
-    printf("Items\t\t");
+    printf("\nItems\t\t\t");
     printf("Qty\t\t");
     printf("Total\t\t");
     printf("\n-----------------------------");
@@ -36,9 +36,9 @@ void generateBillHeader(char name[50], char date[30]){
 }
 
 void generateBillBody(char itemName[20], int qty, float price){
-    printf("%s\t\t", itemName);
-    printf("%d\t\t", qty);
-    printf("%.2f\t\t", qty * price);
+    printf("%s\t\t\t", itemName);
+    printf("%d\t\t\t", qty);
+    printf("%.2f\t\t\t", qty * price);
     printf("\n");
 }
 
@@ -48,18 +48,14 @@ void generateBillFooter(float total){
     float netTotal = total-dis;
     float cgst = 0.09f*netTotal,grandTotal = netTotal + 2;
     printf("-------------------------------------------\t");
-    printf("Sub Total\t\t\t%.2f",total);
-<<<<<<< HEAD
-    printf("\nDiscount @10%s\t\t\t%.2f","%",dis);
-=======
-    printf("\nDiscount @10\t\t\t%.2f",dis); // I don't really understand this part
->>>>>>> bea0639b4824d426bcddc73f33ffed38e1e6675d
-    printf("\n\t\t\t\t--------");
-    printf("Net Total\t\t\t\t%.2f", netTotal);
-    printf("CGST @9\t\t\t\t%.2f", cgst); // I don't really understand this part
-    printf("SGST @9\t\t\t\t%.2f", cgst); // I don't really understand this part
+    printf("\nSub Total\t\t\t\t%.2f",total);
+    printf("\nDiscount @10%\t\t\t%.2f",dis);
+    printf("\n\t\t\t\t\t-----");
+    printf("\nNet Total\t\t\t\t%.2f", netTotal);
+    printf("\nCGST @9%\t\t\t\t\t%.2f", cgst);
+    printf("\nSGST @9%\t\t\t\t\t%.2f", cgst); //
     printf("\n---------------------------------------------");
-    printf("\nGrand Total\t\t\t%.2f",grandTotal);
+    printf("\nGrand Total\t\t\t\t%.2f",grandTotal);
     printf("\n---------------------------------------------");
 
 }
@@ -68,7 +64,10 @@ int main() {
 
     int opt,n;
     struct orders ord;
+    struct orders order;
     float total;
+    char saveBill ='y';
+    FILE *fp;
 
 
     // initialize arrays to zero
@@ -88,6 +87,7 @@ int main() {
     switch (opt)
     {
     case 1:
+        system("cls");
         printf("\nPlease Enter name of customer:\t");
         fgets(ord.customerName,50,stdin);
         ord.customerName[strlen(ord.customerName)- 1]=0;
@@ -107,7 +107,7 @@ int main() {
             memset(ord.itm[i].itemName, 0, sizeof ord.itm[i].itemName);
 
 
-            fgets(ord.itm[i].itemName,20,stdin);
+            fgets(ord.itm[i].itemName,50,stdin);
             ord.itm[i].itemName[strlen(ord.itm[i].itemName)-1]=0;
             printf("\nPlease enter the quantity:\t");
             scanf("%d",&ord.itm[i].qty);
@@ -121,9 +121,38 @@ int main() {
             generateBillBody(ord.itm[i].itemName,ord.itm[i].qty, ord.itm[i].price);
         }
         generateBillFooter(total);
-        
+
+        printf("\nDo you want to save this invoice [y/n]:\t");
+        scanf("%s", &saveBill);
+
+        if(saveBill == 'y'){
+            fp = fopen("NovaBill.dat","a+");
+            fwrite(&ord,sizeof(struct orders),1,fp);
+            if(fwrite != 0){
+                printf("\nInvoice Saved");
+            }
+            else{
+                printf("\nCouldn't save file");
+            }
+            fclose(fp);
+        }
+
         break;
-    
+
+    case 2:
+        system("cls");
+        fp = fopen("NovaBill.dat","r");
+        printf("\n  *********Your Previous Invoices*********\n");
+        while(fread(&order, sizeof(struct orders),1,fp)){
+            generateBillHeader(order.customerName,order.date);
+            for(int i=0;i<order.numOfItems;i++){
+                generateBillBody(order.itm[i].itemName,order.itm[i].qty,order.itm[i].price);
+                total += order.itm[i].qty * order.itm[i].price;
+            }
+            generateBillFooter(total);
+        }
+        fclose(fp);
+
     default:
         break;
     }
