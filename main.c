@@ -66,7 +66,8 @@ int main() {
     struct orders ord;
     struct orders order;
     float total;
-    char saveBill ='y';
+    char name[50];
+    char saveBill = 'y',contFlag = 'y';
     FILE *fp;
 
 
@@ -74,6 +75,9 @@ int main() {
     memset(ord.customerName, 0, sizeof ord.customerName);
     memset(ord.date, 0, sizeof ord.date);
 
+    while(contFlag == 'y') {
+    float total= 0;
+    int invoiceFound = 0;
     printf("===============X-Nova Tech===================");
     printf("\nPlease select your operation");
     printf("\n\n1.Generate Invoice");
@@ -125,8 +129,8 @@ int main() {
         printf("\nDo you want to save this invoice [y/n]:\t");
         scanf("%s", &saveBill);
 
-        if(saveBill == 'y'){
-            fp = fopen("NovaBill.dat","a+");
+        if(saveBill == 'y' || saveBill == 'Y'){
+            fp = fopen("NovaBil.txt","a+");
             fwrite(&ord,sizeof(struct orders),1,fp);
             if(fwrite != 0){
                 printf("\nInvoice Saved");
@@ -141,22 +145,61 @@ int main() {
 
     case 2:
         system("cls");
-        fp = fopen("NovaBill.dat","r");
+        fp = fopen("NovaBil.txt","r+");
+        if (fp == NULL){
+            printf("No records!");
+        }
         printf("\n  *********Your Previous Invoices*********\n");
         while(fread(&order, sizeof(struct orders),1,fp)){
-            generateBillHeader(order.customerName,order.date);
+            float tot = 0;
+            generateBillHeader(ord.customerName,order.date);
             for(int i=0;i<order.numOfItems;i++){
                 generateBillBody(order.itm[i].itemName,order.itm[i].qty,order.itm[i].price);
-                total += order.itm[i].qty * order.itm[i].price;
+                tot += order.itm[i].qty * order.itm[i].price;
             }
-            generateBillFooter(total);
+            generateBillFooter(tot);
         }
         fclose(fp);
+        break;
+
+    case 3:
+        printf("\n Enter the name of the customer:\t");
+        //fgetc(stdin);
+        fgets(name,50,stdin);
+        name[strlen(name)- 1] = 0;
+        system("cls");
+        fp = fopen("NovaBil.txt","r");
+        printf("\n  *********Invoice of %s*********\n", name);
+        while(fread(&order, sizeof(struct orders),1,fp)){
+            float tot = 0;
+           if(!strcmp[name,order.customerName]){
+            generateBillHeader(ord.customerName,order.date);
+            for(int i=0;i<order.numOfItems;i++){
+                generateBillBody(order.itm[i].itemName,order.itm[i].qty,order.itm[i].price);
+                tot += order.itm[i].qty * order.itm[i].price;
+            }
+            generateBillFooter(tot);
+            invoiceFound = 1;
+              }
+             if (!invoiceFound)
+                    {
+            printf("Sorry the invoice for %s does not exist", name);
+            }
+            fclose(fp);
+            break;
+
+    case 4:
+        printf("\n\t\t Bye, See you again");
+        exit(0);
+        break;
 
     default:
+        printf("Sorry Invalid option");
         break;
     }
-
+    printf("\nDo you want to perform another operation?[y/n]:");
+    scanf("%s",&contFlag);
+    }
 
     printf("\n\n");
 
