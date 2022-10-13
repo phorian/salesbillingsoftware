@@ -74,8 +74,11 @@ int main() {
     // initialize arrays to zero
     memset(ord.customerName, 0, sizeof ord.customerName);
     memset(ord.date, 0, sizeof ord.date);
+    memset(name, 0, sizeof name);
+    memset(order.customerName, 0, sizeof order.customerName);
 
     while(contFlag == 'y') {
+    system("cls");
     float total= 0;
     int invoiceFound = 0;
     printf("===============X-Nova Tech===================");
@@ -130,9 +133,9 @@ int main() {
         scanf("%s", &saveBill);
 
         if(saveBill == 'y' || saveBill == 'Y'){
-            fp = fopen("NovaBil.txt","a+");
+            fp = fopen("NovaBil.txt","w+");
             fwrite(&ord,sizeof(struct orders),1,fp);
-            if(fwrite != 0){
+            if(!fwrite == 0){
                 printf("\nInvoice Saved");
             }
             else{
@@ -164,7 +167,9 @@ int main() {
 
     case 3:
         printf("\n Enter the name of the customer:\t");
-        //fgetc(stdin);
+        memset(name, 0, sizeof name);
+
+        fgetc(stdin);
         fgets(name,50,stdin);
         name[strlen(name)- 1] = 0;
         system("cls");
@@ -172,7 +177,7 @@ int main() {
         printf("\n  *********Invoice of %s*********\n", name);
         while(fread(&order, sizeof(struct orders),1,fp)){
             float tot = 0;
-           if(!strcmp[name,order.customerName]){
+           if(!strcmp(order.customerName,name)){
             generateBillHeader(ord.customerName,order.date);
             for(int i=0;i<order.numOfItems;i++){
                 generateBillBody(order.itm[i].itemName,order.itm[i].qty,order.itm[i].price);
@@ -200,10 +205,12 @@ int main() {
     printf("\nDo you want to perform another operation?[y/n]:");
     scanf("%s",&contFlag);
     }
+    }
+
+    printf("\n\t\t Bye, See you again");
 
     printf("\n\n");
 
 
     return 0;
 }
-
