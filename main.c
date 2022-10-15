@@ -133,7 +133,7 @@ int main() {
         scanf("%s", &saveBill);
 
         if(saveBill == 'y' || saveBill == 'Y'){
-            fp = fopen("NovaBil.txt","w+");
+            fp = fopen("NovaBill.dat","w+");
             fwrite(&ord,sizeof(struct orders),1,fp);
             if(!fwrite == 0){
                 printf("\nInvoice Saved");
@@ -148,12 +148,13 @@ int main() {
 
     case 2:
         system("cls");
-        fp = fopen("NovaBil.txt","r+");
+        fp = fopen("NovaBill.dat", "r");
         if (fp == NULL){
             printf("No records!");
+            exit(1);
         }
         printf("\n  *********Your Previous Invoices*********\n");
-        while(fread(&order, sizeof(struct orders),1,fp)){
+        while(fread(&order, sizeof(struct orders),1,fp)==1){
             float tot = 0;
             generateBillHeader(ord.customerName,order.date);
             for(int i=0;i<order.numOfItems;i++){
@@ -166,14 +167,14 @@ int main() {
         break;
 
     case 3:
-        printf("\n Enter the name of the customer:\t");
+        printf("\n Enter the name of the customer: ");
         memset(name, 0, sizeof name);
 
-        fgetc(stdin);
+        //fgetc(stdin);
         fgets(name,50,stdin);
         name[strlen(name)- 1] = 0;
         system("cls");
-        fp = fopen("NovaBil.txt","r");
+        fp = fopen("NovaBill.dat","r");
         printf("\n  *********Invoice of %s*********\n", name);
         while(fread(&order, sizeof(struct orders),1,fp)){
             float tot = 0;
